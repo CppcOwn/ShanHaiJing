@@ -1,0 +1,124 @@
+<!-- detail.wxml -->
+<view class="container">
+  <!-- 详情页头部 -->
+  <view class="detail-header">
+    <image src="{{scenicSpot?.image_url}}" class="detail-header-image" mode="aspectFill"></image>
+    <view class="detail-header-overlay">
+      <view class="detail-title">{{scenicSpot?.name}}</view>
+      <view class="detail-subtitle">{{scenicSpot?.type}} · {{scenicSpot?.location}}</view>
+    </view>
+  </view>
+
+  <!-- 详情内容 -->
+  <view class="detail-content">
+    <!-- 基本信息 -->
+    <view class="detail-section">
+      <view class="detail-section-title">基本信息</view>
+      <view class="detail-section-content">
+        <view class="info-item">
+          <view class="info-label">景点类型</view>
+          <view class="info-value">{{scenicSpot?.type}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">所在位置</view>
+          <view class="info-value">{{scenicSpot?.location}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">开放时间</view>
+          <view class="info-value">{{scenicSpot?.opening_hours}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">门票信息</view>
+          <view class="info-value">{{scenicSpot?.ticket_info}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">联系电话</view>
+          <view class="info-value">{{scenicSpot?.contact_phone}}</view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">官方网站</view>
+          <view class="info-value"><navigator url="{{scenicSpot?.official_website}}" target="_blank">{{scenicSpot?.official_website}}</navigator></view>
+        </view>
+        <view class="info-item">
+          <view class="info-label">评分</view>
+          <view class="info-value">⭐ {{scenicSpot?.rating}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 景点描述 -->
+    <view class="detail-section">
+      <view class="detail-section-title">景点描述</view>
+      <view class="detail-section-content">
+        {{scenicSpot?.description}}
+      </view>
+    </view>
+
+    <!-- 最佳观赏季节 -->
+    <view class="detail-section">
+      <view class="detail-section-title">最佳观赏季节</view>
+      <view class="detail-section-content">
+        {{scenicSpot?.best_season}}
+      </view>
+    </view>
+
+    <!-- 观测点位 -->
+    <view class="detail-section">
+      <view class="detail-section-title">观测点位</view>
+      <view class="observation-points">
+        <view wx:for="{{observationPoints}}" wx:key="id" class="observation-point-item">
+          <view class="observation-point-name">{{item.name}}</view>
+          <view class="observation-point-description">{{item.description}}</view>
+          <view class="observation-point-facilities">
+            <text class="observation-point-facilities-label">设施：</text>
+            <view class="observation-point-facilities-list">
+              <view wx:for="{{item.facilities}}" wx:key="index" class="observation-point-facility">
+                {{item}}
+              </view>
+            </view>
+          </view>
+          <view class="observation-point-access">
+            <text class="observation-point-access-label">交通：</text>
+            {{item.access_info}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 天气信息 -->
+    <view class="detail-section">
+      <view class="detail-section-title">天气信息</view>
+      <view class="weather-info">
+        <view class="weather-info-icon">{{weatherIcon}}</view>
+        <view class="weather-info-content">
+          <view class="weather-info-temp">{{weather?.temperature || '25'}}°C</view>
+          <view class="weather-info-desc">{{weather?.weather || '晴天'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 相关推荐 -->
+    <view class="detail-section">
+      <view class="detail-section-title">相关推荐</view>
+      <view class="related-spots">
+        <view wx:for="{{relatedSpots}}" wx:key="id" class="related-spot-item">
+          <navigator url="/pages/detail/detail?id={{item.id}}">
+            <image src="{{item.image_url}}" class="related-spot-image" mode="aspectFill"></image>
+            <view class="related-spot-name">{{item.name}}</view>
+            <view class="related-spot-location">{{item.location}}</view>
+          </navigator>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误提示 -->
+  <view wx:if="{{error}}" class="error">
+    <text>{{error}}</text>
+  </view>
+</view>

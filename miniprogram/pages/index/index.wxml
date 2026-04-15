@@ -1,0 +1,84 @@
+<!-- index.wxml -->
+<view class="container">
+  <!-- 顶部搜索栏 -->
+  <view class="search-bar">
+    <navigator url="/pages/search/search" class="search-input-wrapper">
+      <view class="search-icon">🔍</view>
+      <view class="search-placeholder">搜索自然奇观</view>
+    </navigator>
+  </view>
+
+  <!-- 轮播图 -->
+  <view class="section">
+    <swiper autoplay interval="3000" circular indicator-dots>
+      <swiper-item wx:for="{{scenicSpots}}" wx:key="id">
+        <navigator url="/pages/detail/detail?id={{item.id}}">
+          <image src="{{item.image_url}}" class="swiper-image" mode="aspectFill"></image>
+          <view class="swiper-overlay">
+            <view class="swiper-title">{{item.name}}</view>
+            <view class="swiper-subtitle">{{item.location}}</view>
+          </view>
+        </navigator>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 自然奇观列表 -->
+  <view class="section">
+    <view class="section-title">自然奇观</view>
+    <view wx:for="{{scenicSpots}}" wx:key="id" class="card">
+      <navigator url="/pages/detail/detail?id={{item.id}}">
+        <view class="card-content-wrapper">
+          <image src="{{item.image_url}}" class="card-image" mode="aspectFill"></image>
+          <view class="card-info">
+            <view class="card-title">{{item.name}}</view>
+            <view class="card-subtitle">{{item.type}} · {{item.location}}</view>
+            <view class="card-description">{{item.description}}</view>
+            <view class="card-footer">
+              <view class="card-rating">⭐ {{item.rating}}</view>
+              <view class="card-ticket">{{item.ticket_info}}</view>
+            </view>
+          </view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+
+  <!-- 天气预报 -->
+  <view class="section">
+    <view class="section-title">天气预报</view>
+    <view class="weather-preview">
+      <navigator url="/pages/weather/weather">
+        <view class="weather-preview-item">
+          <view class="weather-icon">🌤️</view>
+          <view class="weather-info">
+            <view class="weather-temp">{{currentWeather?.temperature || '25'}}°C</view>
+            <view class="weather-desc">{{currentWeather?.description || '晴天'}}</view>
+          </view>
+          <view class="weather-arrow">→</view>
+        </view>
+      </navigator>
+    </view>
+  </view>
+
+  <!-- 地图入口 -->
+  <view class="section">
+    <view class="section-title">探索地图</view>
+    <navigator url="/pages/map/map" class="map-entry">
+      <view class="map-entry-content">
+        <view class="map-icon">🗺️</view>
+        <view class="map-text">查看 3D 地球仪/中国地图</view>
+      </view>
+    </navigator>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误提示 -->
+  <view wx:if="{{error}}" class="error">
+    <text>{{error}}</text>
+  </view>
+</view>

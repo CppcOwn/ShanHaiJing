@@ -1,0 +1,127 @@
+# Serverless 配置文件
+# 用于配置云函数、触发器等
+
+service: shanhaijing-weather
+
+provider:
+  name: tencent
+  runtime: python3.10
+  region: ap-guangzhou
+  credentials:
+    secretId: ${env:TENCENT_SECRET_ID}
+    secretKey: ${env:TENCENT_SECRET_KEY}
+
+functions:
+  generateWeatherData:
+    handler: src.functions.generate_weather_data.main_handler
+    name: generate-weather-data
+    description: 定时生成天气数据
+    memorySize: 128
+    timeout: 30
+    environment:
+      variables:
+        OPENWEATHER_API_KEY: ${env:OPENWEATHER_API_KEY}
+    events:
+      # 定时触发器，每25分钟执行一次
+      - timer:
+          name: weather-data-timer
+          cronExpression: "0 0/25 * * * * *"
+          enable: true
+
+  generateStaticData:
+    handler: src.functions.generate_static_data.main_handler
+    name: generate-static-data
+    description: 生成静态数据
+    memorySize: 128
+    timeout: 30
+
+  generateStarrySkyForecast:
+    handler: src.functions.generate_wonder_forecast.main_handler
+    name: generate-starry-sky-forecast
+    description: 每日生成星空预报数据
+    memorySize: 128
+    timeout: 30
+    environment:
+      variables:
+        wonder_type: starry_sky
+    events:
+      # 定时触发器，每天凌晨2点执行
+      - timer:
+          name: starry-sky-forecast-timer
+          cronExpression: "0 0 2 * * * *"
+          enable: true
+
+  generateSunriseForecast:
+    handler: src.functions.generate_wonder_forecast.main_handler
+    name: generate-sunrise-forecast
+    description: 每日生成日出预报数据
+    memorySize: 128
+    timeout: 30
+    environment:
+      variables:
+        wonder_type: sunrise
+    events:
+      # 定时触发器，每天凌晨2点执行
+      - timer:
+          name: sunrise-forecast-timer
+          cronExpression: "0 0 2 * * * *"
+          enable: true
+
+  generateSeaOfCloudsForecast:
+    handler: src.functions.generate_wonder_forecast.main_handler
+    name: generate-sea-of-clouds-forecast
+    description: 每4小时生成云海预报数据
+    memorySize: 128
+    timeout: 30
+    environment:
+      variables:
+        wonder_type: 云海
+    events:
+      # 定时触发器，每4小时执行
+      - timer:
+          name: sea-of-clouds-forecast-timer
+          cronExpression: "0 0 0/4 * * * *"
+          enable: true
+
+  generateTidalBoreForecast:
+    handler: src.functions.generate_wonder_forecast.main_handler
+    name: generate-tidal-bore-forecast
+    description: 每4小时生成江潮预报数据
+    memorySize: 128
+    timeout: 30
+    environment:
+      variables:
+        wonder_type: 江潮
+    events:
+      # 定时触发器，每4小时执行
+      - timer:
+          name: tidal-bore-forecast-timer
+          cronExpression: "0 0 0/4 * * * *"
+          enable: true
+
+  generateGoldenMountainForecast:
+    handler: src.functions.generate_wonder_forecast.main_handler
+    name: generate-golden-mountain-forecast
+    description: 每日生成日照金山预报数据
+    memorySize: 128
+    timeout: 30
+    environment:
+      variables:
+        wonder_type: 日照金山
+    events:
+      # 定时触发器，每天凌晨2点执行
+      - timer:
+          name: golden-mountain-forecast-timer
+          cronExpression: "0 0 2 * * * *"
+          enable: true
+
+package:
+  include:
+    - src/**
+  exclude:
+    - .git/**
+    - .trae/**
+    - __pycache__/**
+
+plugins:
+  - serverless-tencent-scf

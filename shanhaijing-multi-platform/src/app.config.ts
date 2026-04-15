@@ -1,0 +1,55 @@
+import { AppConfig } from '@tarojs/taro';
+
+const config: AppConfig = {
+  entryPagePath: 'pages/index/index',
+  pages: [
+    'pages/index/index',
+    'pages/detail/detail',
+    'pages/map/map',
+    'pages/weather/weather',
+    'pages/search/search'
+  ],
+  window: {
+    backgroundTextStyle: 'light',
+    navigationBarBackgroundColor: '#fff',
+    navigationBarTitleText: '山海经',
+    navigationBarTextStyle: 'black'
+  },
+  tabBar: {
+    list: [
+      {
+        pagePath: 'pages/index/index',
+        text: '首页',
+        iconPath: 'images/tab-home.png',
+        selectedIconPath: 'images/tab-home-active.png'
+      },
+      {
+        pagePath: 'pages/map/map',
+        text: '地图',
+        iconPath: 'images/tab-map.png',
+        selectedIconPath: 'images/tab-map-active.png'
+      },
+      {
+        pagePath: 'pages/weather/weather',
+        text: '天气',
+        iconPath: 'images/tab-weather.png',
+        selectedIconPath: 'images/tab-weather-active.png'
+      },
+      {
+        pagePath: 'pages/search/search',
+        text: '搜索',
+        iconPath: 'images/tab-search.png',
+        selectedIconPath: 'images/tab-search-active.png'
+      }
+    ]
+  },
+  subPackages: [],
+  components: [],
+  permission: {
+    'scope.userLocation': {
+      desc: '用于展示您附近的自然奇观'
+    }
+  }
+};
+
+export default config;

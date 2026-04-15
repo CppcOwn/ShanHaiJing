@@ -1,0 +1,82 @@
+<!-- weather.wxml -->
+<view class="container">
+  <!-- 天气信息 -->
+  <view class="section weather-section">
+    <view class="weather-container">
+      <view class="weather-icon">{{weatherIcon}}</view>
+      <view class="weather-temp">{{currentWeather?.temperature || '25'}}°C</view>
+      <view class="weather-desc">{{currentWeather?.description || '晴天'}}</view>
+      <view class="weather-location">{{currentWeather?.location || '北京市'}}</view>
+    </view>
+  </view>
+
+  <!-- 天气详情 -->
+  <view class="section">
+    <view class="section-title">天气详情</view>
+    <view class="weather-details">
+      <view class="weather-detail-item">
+        <view class="weather-detail-icon">💧</view>
+        <view class="weather-detail-label">湿度</view>
+        <view class="weather-detail-value">{{currentWeather?.humidity || '60'}}%</view>
+      </view>
+      <view class="weather-detail-item">
+        <view class="weather-detail-icon">💨</view>
+        <view class="weather-detail-label">风速</view>
+        <view class="weather-detail-value">{{currentWeather?.windSpeed || '3'}} m/s</view>
+      </view>
+      <view class="weather-detail-item">
+        <view class="weather-detail-icon">🌡️</view>
+        <view class="weather-detail-label">体感温度</view>
+        <view class="weather-detail-value">{{currentWeather?.feelsLike || '27'}}°C</view>
+      </view>
+      <view class="weather-detail-item">
+        <view class="weather-detail-icon">☁️</view>
+        <view class="weather-detail-label">云量</view>
+        <view class="weather-detail-value">{{currentWeather?.cloudiness || '20'}}%</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 未来天气预报 -->
+  <view class="section">
+    <view class="section-title">未来天气预报</view>
+    <view class="forecast-list">
+      <view wx:for="{{forecastData?.daily || []}}" wx:key="date" class="forecast-item">
+        <view class="forecast-date">{{item.date}}</view>
+        <view class="forecast-icon">{{getWeatherIcon(item.weather)}}</view>
+        <view class="forecast-temp">
+          <view class="forecast-temp-high">{{item.tempMax}}°</view>
+          <view class="forecast-temp-low">{{item.tempMin}}°</view>
+        </view>
+        <view class="forecast-desc">{{item.weather}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 景区天气 -->
+  <view class="section">
+    <view class="section-title">景区天气</view>
+    <view class="scenic-weather-list">
+      <view wx:for="{{scenicWeatherList}}" wx:key="id" class="scenic-weather-item">
+        <navigator url="/pages/detail/detail?id={{item.id}}">
+          <view class="scenic-weather-name">{{item.name}}</view>
+          <view class="scenic-weather-info">
+            <view class="scenic-weather-icon">{{getWeatherIcon(item.weather)}}</view>
+            <view class="scenic-weather-temp">{{item.temperature}}°C</view>
+            <view class="scenic-weather-desc">{{item.weather}}</view>
+          </view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误提示 -->
+  <view wx:if="{{error}}" class="error">
+    <text>{{error}}</text>
+  </view>
+</view>

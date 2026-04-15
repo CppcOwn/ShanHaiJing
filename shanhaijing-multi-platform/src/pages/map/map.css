@@ -1,0 +1,160 @@
+/* 地图页面样式 */
+
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: #000;
+}
+
+.map-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 地图控制栏 */
+.map-control {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+
+.map-control-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+}
+
+.map-control-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.map-control-btn:active {
+  transform: scale(0.95);
+}
+
+/* 地图标记 */
+.map-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.map-marker-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  pointer-events: auto;
+  animation: pulse 2s infinite;
+}
+
+.map-marker-label {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* 加载中 */
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 4px;
+  z-index: 20;
+}
+
+/* 动画效果 */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .map-control {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .map-control-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .map-marker-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+  }
+  
+  .map-marker-label {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+@media (min-width: 769px) {
+  .map-control {
+    top: 30px;
+    right: 30px;
+  }
+  
+  .map-control-btn {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .map-marker-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+  }
+  
+  .map-marker-label {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}

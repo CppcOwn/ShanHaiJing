@@ -1,0 +1,34 @@
+<!-- map.wxml -->
+<view class="map-container">
+  <!-- 3D地球仪/中国地图容器 -->
+  <view id="mapCanvas" class="map-canvas"></view>
+  
+  <!-- 地图控制栏 -->
+  <view class="map-control">
+    <view class="map-control-btn" bindtap="switchMapType">
+      <text>{{mapType === 'globe' ? '🌎' : '🗺️'}}</text>
+    </view>
+    <view class="map-control-btn" bindtap="zoomIn">
+      <text>🔍+</text>
+    </view>
+    <view class="map-control-btn" bindtap="zoomOut">
+      <text>🔍-</text>
+    </view>
+    <view class="map-control-btn" bindtap="resetMap">
+      <text>🔄</text>
+    </view>
+  </view>
+  
+  <!-- 自然奇观标记 -->
+  <view wx:for="{{scenicSpots}}" wx:key="id" class="map-marker" style="left: {{item.coordinates.longitude}}%; top: {{item.coordinates.latitude}}%;">
+    <view class="map-marker-icon" bindtap="showScenicSpotDetail" data-id="{{item.id}}">
+      <text>📍</text>
+    </view>
+    <view class="map-marker-label">{{item.name}}</view>
+  </view>
+  
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>地图加载中...</text>
+  </view>
+</view>

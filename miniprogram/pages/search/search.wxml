@@ -1,0 +1,60 @@
+<!-- search.wxml -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-container">
+    <input 
+      class="search-input" 
+      placeholder="搜索自然奇观、景区..." 
+      bindinput="onSearchInput" 
+      bindconfirm="onSearch"
+      value="{{searchQuery}}"
+    />
+    <view class="search-btn" bindtap="onSearch">搜索</view>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view wx:if="{{!searchQuery && searchHistory.length > 0}}" class="section">
+    <view class="section-title">搜索历史</view>
+    <view class="search-history-list">
+      <view wx:for="{{searchHistory}}" wx:key="index" class="search-history-item" bindtap="onHistoryItemTap" data-item="{{item}}">
+        <text>{{item}}</text>
+        <view class="search-history-delete" bindtap="onHistoryDelete" data-index="{{index}}">×</view>
+      </view>
+    </view>
+    <view class="search-history-clear" bindtap="onHistoryClear">清除历史记录</view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view wx:if="{{!searchQuery}}" class="section">
+    <view class="section-title">热门搜索</view>
+    <view class="hot-search-list">
+      <view wx:for="{{hotSearch}}" wx:key="index" class="hot-search-item" bindtap="onHotSearchTap" data-item="{{item}}">
+        <text>{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view wx:if="{{searchQuery}}" class="search-results">
+    <view wx:if="{{searchResults.length > 0}}" class="search-result-list">
+      <view wx:for="{{searchResults}}" wx:key="id" class="search-result-item">
+        <navigator url="/pages/detail/detail?id={{item.id}}">
+          <image src="{{item.image_url}}" class="search-result-image" mode="aspectFill"></image>
+          <view class="search-result-info">
+            <view class="search-result-title">{{item.name}}</view>
+            <view class="search-result-subtitle">{{item.type}} · {{item.location}}</view>
+            <view class="search-result-description">{{item.description}}</view>
+          </view>
+        </navigator>
+      </view>
+    </view>
+    <view wx:else class="search-result-empty">
+      <text>未找到相关结果</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>搜索中...</text>
+  </view>
+</view>

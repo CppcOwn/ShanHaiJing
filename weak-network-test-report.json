@@ -1,0 +1,144 @@
+{
+  "timestamp": "2026-04-15T12:38:16.713Z",
+  "networkConditions": [
+    {
+      "name": "正常网络",
+      "latency": 50,
+      "downloadSpeed": 10000,
+      "uploadSpeed": 5000
+    },
+    {
+      "name": "弱网环境",
+      "latency": 500,
+      "downloadSpeed": 1000,
+      "uploadSpeed": 500
+    },
+    {
+      "name": "极弱网环境",
+      "latency": 1000,
+      "downloadSpeed": 200,
+      "uploadSpeed": 100
+    },
+    {
+      "name": "断网环境",
+      "latency": 0,
+      "downloadSpeed": 0,
+      "uploadSpeed": 0
+    }
+  ],
+  "testCases": [
+    {
+      "name": "首页数据加载",
+      "url": "/api/scenic-spots",
+      "method": "GET"
+    },
+    {
+      "name": "天气数据加载",
+      "url": "/api/weather",
+      "method": "GET"
+    },
+    {
+      "name": "景点详情加载",
+      "url": "/api/scenic-spots/1",
+      "method": "GET"
+    }
+  ],
+  "results": [
+    {
+      "testCase": "首页数据加载",
+      "networkCondition": "正常网络",
+      "latency": 50,
+      "downloadSpeed": 10000,
+      "totalTime": 1075,
+      "success": true
+    },
+    {
+      "testCase": "天气数据加载",
+      "networkCondition": "正常网络",
+      "latency": 50,
+      "downloadSpeed": 10000,
+      "totalTime": 1075,
+      "success": true
+    },
+    {
+      "testCase": "景点详情加载",
+      "networkCondition": "正常网络",
+      "latency": 50,
+      "downloadSpeed": 10000,
+      "totalTime": 1076,
+      "success": true
+    },
+    {
+      "testCase": "首页数据加载",
+      "networkCondition": "弱网环境",
+      "latency": 500,
+      "downloadSpeed": 1000,
+      "totalTime": 10746,
+      "success": true
+    },
+    {
+      "testCase": "天气数据加载",
+      "networkCondition": "弱网环境",
+      "latency": 500,
+      "downloadSpeed": 1000,
+      "totalTime": 10742,
+      "success": true
+    },
+    {
+      "testCase": "景点详情加载",
+      "networkCondition": "弱网环境",
+      "latency": 500,
+      "downloadSpeed": 1000,
+      "totalTime": 10744,
+      "success": true
+    },
+    {
+      "testCase": "首页数据加载",
+      "networkCondition": "极弱网环境",
+      "latency": 1000,
+      "downloadSpeed": 200,
+      "totalTime": 52208,
+      "success": true
+    },
+    {
+      "testCase": "天气数据加载",
+      "networkCondition": "极弱网环境",
+      "latency": 1000,
+      "downloadSpeed": 200,
+      "totalTime": 52204,
+      "success": true
+    },
+    {
+      "testCase": "景点详情加载",
+      "networkCondition": "极弱网环境",
+      "latency": 1000,
+      "downloadSpeed": 200,
+      "totalTime": 52207,
+      "success": true
+    },
+    {
+      "testCase": "首页数据加载",
+      "networkCondition": "断网环境",
+      "latency": 0,
+      "downloadSpeed": 0,
+      "totalTime": 3,
+      "success": false
+    },
+    {
+      "testCase": "天气数据加载",
+      "networkCondition": "断网环境",
+      "latency": 0,
+      "downloadSpeed": 0,
+      "totalTime": 2,
+      "success": false
+    },
+    {
+      "testCase": "景点详情加载",
+      "networkCondition": "断网环境",
+      "latency": 0,
+      "downloadSpeed": 0,
+      "totalTime": 2,
+      "success": false
+    }
+  ]
+}

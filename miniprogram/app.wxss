@@ -1,0 +1,309 @@
+/* app.wxss */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.section {
+  margin-bottom: 30rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  color: #333;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+  color: #333;
+}
+
+.card-content {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+.btn {
+  display: inline-block;
+  padding: 15rpx 30rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #40a9ff;
+}
+
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200rpx;
+  font-size: 24rpx;
+  color: #ff4d4f;
+}
+
+/* 地图相关样式 */
+.map-container {
+  width: 100%;
+  height: 100vh;
+}
+
+.map-control {
+  position: fixed;
+  bottom: 100rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20rpx;
+  padding: 10rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.map-control-btn {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10rpx;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.map-control-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* 天气相关样式 */
+.weather-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+}
+
+.weather-icon {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 20rpx;
+}
+
+.weather-temp {
+  font-size: 64rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.weather-desc {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 30rpx;
+}
+
+.weather-details {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.weather-detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10rpx;
+}
+
+.weather-detail-label {
+  font-size: 20rpx;
+  color: #999;
+  margin-bottom: 5rpx;
+}
+
+.weather-detail-value {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+/* 搜索相关样式 */
+.search-container {
+  padding: 20rpx;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.05);
+}
+
+.search-input {
+  width: 100%;
+  height: 60rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 30rpx;
+  padding: 0 30rpx;
+  font-size: 24rpx;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2rpx rgba(24, 144, 255, 0.2);
+}
+
+.search-results {
+  padding: 20rpx;
+}
+
+.search-result-item {
+  padding: 20rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 15rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 详情页样式 */
+.detail-header {
+  position: relative;
+  height: 400rpx;
+  overflow: hidden;
+}
+
+.detail-header-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-header-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 40rpx 20rpx;
+  color: #fff;
+}
+
+.detail-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.detail-subtitle {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
+.detail-content {
+  padding: 20rpx;
+}
+
+.detail-section {
+  margin-bottom: 30rpx;
+}
+
+.detail-section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 15rpx;
+  color: #333;
+}
+
+.detail-section-content {
+  font-size: 24rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* 响应式设计 */
+@media (max-width: 375px) {
+  .section-title {
+    font-size: 28rpx;
+  }
+  
+  .card-title {
+    font-size: 24rpx;
+  }
+  
+  .card-content {
+    font-size: 20rpx;
+  }
+  
+  .weather-temp {
+    font-size: 56rpx;
+  }
+  
+  .weather-desc {
+    font-size: 24rpx;
+  }
+  
+  .detail-title {
+    font-size: 32rpx;
+  }
+  
+  .detail-subtitle {
+    font-size: 20rpx;
+  }
+}
