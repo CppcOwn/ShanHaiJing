@@ -15,6 +15,8 @@ function App() {
   ];
 
   useEffect(() => {
+    if (!containerRef.current) return;
+    
     // 初始化 Three.js 场景
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -32,6 +34,9 @@ function App() {
     scene.add(earth);
 
     // 添加自然奇观标记
+    const markers = [];
+    const markerGeometries = [];
+    
     wonders.forEach(wonder => {
       const markerGeometry = new THREE.SphereGeometry(0.02, 16, 16);
       const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -47,14 +52,17 @@ function App() {
       );
       
       scene.add(marker);
+      markers.push(marker);
+      markerGeometries.push(markerGeometry);
     });
 
     // 设置相机位置
     camera.position.z = 2;
 
     // 动画循环
+    let animationId;
     const animate = () => {
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
       earth.rotation.y += 0.001;
       renderer.render(scene, camera);
     };
@@ -63,6 +71,7 @@ function App() {
 
     // 响应窗口大小变化
     const handleResize = () => {
+      if (!camera || !renderer) return;
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -73,7 +82,24 @@ function App() {
     // 清理
     return () => {
       window.removeEventListener('resize', handleResize);
-      containerRef.current.removeChild(renderer.domElement);
+      
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      
+      // 清理 Three.js 资源
+      markers.forEach(marker => scene.remove(marker));
+      markerGeometries.forEach(geometry => geometry.dispose());
+      material.dispose();
+      geometry.dispose();
+      texture.dispose();
+      
+      if (renderer) {
+        renderer.dispose();
+        if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
+          containerRef.current.removeChild(renderer.domElement);
+        }
+      }
     };
   }, []);
 
