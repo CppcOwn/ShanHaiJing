@@ -1,8 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
-import * as THREE from 'three';
+import React, { useState } from 'react';
 
 function App() {
-  const containerRef = useRef(null);
   const [selectedWonder, setSelectedWonder] = useState(null);
   
   // 自然奇观数据
@@ -19,144 +17,168 @@ function App() {
     { id: 10, name: '瀑布', location: '黄果树', lat: 25.9917, lng: 105.6750, description: '黄果树瀑布是中国最大的瀑布之一。最佳观测季节为雨季，最佳时间为上午或下午。' }
   ];
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-    
-    // 初始化 Three.js 场景
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    containerRef.current.appendChild(renderer.domElement);
-
-    // 创建地球
-    const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg');
-    const material = new THREE.MeshBasicMaterial({ map: texture });
-    const earth = new THREE.Mesh(geometry, material);
-    scene.add(earth);
-
-    // 添加自然奇观标记
-    const markers = [];
-    const markerGeometries = [];
-    
-    wonders.forEach(wonder => {
-      const markerGeometry = new THREE.SphereGeometry(0.02, 16, 16);
-      const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-      const marker = new THREE.Mesh(markerGeometry, markerMaterial);
-      
-      // 将经纬度转换为 3D 坐标
-      const lat = wonder.lat * Math.PI / 180;
-      const lng = wonder.lng * Math.PI / 180;
-      marker.position.set(
-        Math.cos(lat) * Math.cos(lng),
-        Math.sin(lat),
-        Math.cos(lat) * Math.sin(lng)
-      );
-      
-      scene.add(marker);
-      markers.push(marker);
-      markerGeometries.push(markerGeometry);
-    });
-
-    // 设置相机位置
-    camera.position.z = 2;
-
-    // 动画循环
-    let animationId;
-    const animate = () => {
-      animationId = requestAnimationFrame(animate);
-      earth.rotation.y += 0.001;
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    // 响应窗口大小变化
-    const handleResize = () => {
-      if (!camera || !renderer) return;
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // 清理
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-      }
-      
-      // 清理 Three.js 资源
-      markers.forEach(marker => scene.remove(marker));
-      markerGeometries.forEach(geometry => geometry.dispose());
-      material.dispose();
-      geometry.dispose();
-      texture.dispose();
-      
-      if (renderer) {
-        renderer.dispose();
-        if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
-          containerRef.current.removeChild(renderer.domElement);
-        }
-      }
-    };
-  }, []);
+  // 将经纬度转换为SVG坐标
+  const convertToSvgCoords = (lat, lng) => {
+    // 中国地图范围：经度73-135，纬度18-54
+    const x = ((lng - 73) / (135 - 73)) * 800 + 100;
+    const y = ((54 - lat) / (54 - 18)) * 600 + 50;
+    return { x, y };
+  };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
-      
+    <div style={{ width: '100vw', height: '100vh', display: 'flex', backgroundColor: '#f0f8ff' }}>
       {/* 侧边栏 */}
       <div style={{
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: '300px',
+        width: '350px',
         height: '100%',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        backgroundColor: 'white',
         padding: '20px',
-        overflowY: 'auto'
+        overflowY: 'auto',
+        boxShadow: '2px 0 10px rgba(0,0,0,0.1)'
       }}>
-        <h1>中国自然奇观</h1>
+        <h1 style={{ color: '#1e90ff', marginBottom: '20px', borderBottom: '2px solid #1e90ff', paddingBottom: '10px' }}>中国自然奇观</h1>
         <ul style={{ listStyle: 'none', padding: 0 }}>
           {wonders.map(wonder => (
-            <li key={wonder.id} style={{
-              padding: '10px',
-              marginBottom: '10px',
-              backgroundColor: selectedWonder?.id === wonder.id ? '#e0e0e0' : '#f0f0f0',
-              cursor: 'pointer',
-              borderRadius: '5px'
-            }} onClick={() => setSelectedWonder(wonder)}>
-              <h3>{wonder.name}</h3>
-              <p>{wonder.location}</p>
+            <li 
+              key={wonder.id} 
+              style={{
+                padding: '15px',
+                marginBottom: '12px',
+                backgroundColor: selectedWonder?.id === wonder.id ? '#e6f3ff' : '#f8f9fa',
+                cursor: 'pointer',
+                borderRadius: '8px',
+                border: selectedWonder?.id === wonder.id ? '2px solid #1e90ff' : '2px solid transparent',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }} 
+              onClick={() => setSelectedWonder(wonder)}
+            >
+              <h3 style={{ margin: '0 0 8px 0', color: '#333' }}>{wonder.name}</h3>
+              <p style={{ margin: '0 0 5px 0', color: '#666', fontSize: '14px' }}>📍 {wonder.location}</p>
               {selectedWonder?.id === wonder.id && (
-                <p style={{ marginTop: '10px' }}>{wonder.description}</p>
+                <p style={{ marginTop: '10px', color: '#444', fontSize: '13px', lineHeight: '1.6' }}>{wonder.description}</p>
               )}
             </li>
           ))}
         </ul>
       </div>
       
-      {/* 顶部信息栏 */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        width: 'calc(100% - 300px)',
-        height: '60px',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        padding: '10px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <h2>中国自然奇观文旅地球仪</h2>
+      {/* 地图区域 */}
+      <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column' }}>
+        {/* 顶部信息栏 */}
+        <div style={{
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '10px',
+          marginBottom: '20px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+        }}>
+          <h2 style={{ margin: '0 0 10px 0', color: '#1e90ff' }}>中国自然奇观文旅地球仪</h2>
+          <p style={{ margin: 0, color: '#666' }}>点击地图上的标记点，查看详细信息</p>
+        </div>
+        
+        {/* SVG地图 */}
+        <div style={{
+          flex: 1,
+          backgroundColor: 'white',
+          borderRadius: '10px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden'
+        }}>
+          <svg width="1000" height="700" viewBox="0 0 1000 700">
+            {/* 背景 */}
+            <rect width="1000" height="700" fill="#f0f8ff" />
+            
+            {/* 中国地图轮廓（简化版） */}
+            <path
+              d="M 150 100 
+                 L 200 80 L 250 70 L 300 60 L 350 50 L 400 60 L 450 70 L 500 80 L 550 70 
+                 L 600 60 L 650 70 L 700 90 L 750 100 L 800 120 L 850 150 L 880 200 
+                 L 890 250 L 880 300 L 850 350 L 800 400 L 750 450 L 700 480 L 650 500 
+                 L 600 520 L 550 530 L 500 520 L 450 500 L 400 480 L 350 450 L 300 400 
+                 L 250 350 L 200 300 L 180 250 L 170 200 L 160 150 L 150 100 Z"
+              fill="#d6e9f8"
+              stroke="#1e90ff"
+              strokeWidth="2"
+            />
+            
+            {/* 省份边界线（简化） */}
+            <line x1="300" y1="80" x2="500" y2="300" stroke="#9fc5e8" strokeWidth="1" strokeDasharray="5,5" />
+            <line x1="500" y1="300" x2="700" y2="450" stroke="#9fc5e8" strokeWidth="1" strokeDasharray="5,5" />
+            <line x1="200" y1="200" x2="400" y2="400" stroke="#9fc5e8" strokeWidth="1" strokeDasharray="5,5" />
+            
+            {/* 自然奇观标记点 */}
+            {wonders.map(wonder => {
+              const coords = convertToSvgCoords(wonder.lat, wonder.lng);
+              const isSelected = selectedWonder?.id === wonder.id;
+              
+              return (
+                <g key={wonder.id} onClick={() => setSelectedWonder(wonder)} style={{ cursor: 'pointer' }}>
+                  {/* 外圈动画效果 */}
+                  <circle
+                    cx={coords.x}
+                    cy={coords.y}
+                    r={isSelected ? "20" : "10"}
+                    fill="none"
+                    stroke={isSelected ? "#ff6b6b" : "#ff4757"}
+                    strokeWidth={isSelected ? "3" : "2"}
+                    opacity={isSelected ? "0.8" : "0.6"}
+                  />
+                  {/* 中心点 */}
+                  <circle
+                    cx={coords.x}
+                    cy={coords.y}
+                    r={isSelected ? "12" : "8"}
+                    fill={isSelected ? "#ff4757" : "#ff6b6b"}
+                    stroke="white"
+                    strokeWidth="2"
+                  />
+                  {/* 标记点标签 */}
+                  <text
+                    x={coords.x + 15}
+                    y={coords.y + 5}
+                    fill="#333"
+                    fontSize="12"
+                    fontWeight="bold"
+                    fontFamily="Arial, sans-serif"
+                  >
+                    {wonder.name}
+                  </text>
+                </g>
+              );
+            })}
+            
+            {/* 地图标题 */}
+            <text x="500" y="30" textAnchor="middle" fill="#1e90ff" fontSize="24" fontWeight="bold" fontFamily="Arial, sans-serif">
+              中国自然奇观分布
+            </text>
+            
+            {/* 比例尺 */}
+            <rect x="750" y="600" width="100" height="20" fill="none" stroke="#666" strokeWidth="1" />
+            <text x="800" y="635" textAnchor="middle" fill="#666" fontSize="10" fontFamily="Arial, sans-serif">
+              0-1000km
+            </text>
+          </svg>
+        </div>
+        
+        {/* 底部说明 */}
+        <div style={{
+          marginTop: '20px',
+          backgroundColor: 'white',
+          padding: '15px',
+          borderRadius: '10px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+        }}>
+          <h3 style={{ margin: '0 0 10px 0', color: '#1e90ff' }}>💡 使用说明</h3>
+          <ul style={{ margin: 0, paddingLeft: '20px', color: '#666' }}>
+            <li>点击左侧列表或地图上的标记点查看自然奇观详情</li>
+            <li>地图上红色圆点代表自然奇观观测点</li>
+            <li>点击的标记点会高亮显示</li>
+          </ul>
+        </div>
       </div>
     </div>
   );
