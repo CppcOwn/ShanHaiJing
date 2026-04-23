@@ -1,0 +1,33 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "山海经",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CppcOwn/ShanHaiJing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CppcOwn/ShanHaiJing/issues"
+  },
+  "homepage": "https://github.com/CppcOwn/ShanHaiJing#readme",
+  "dependencies": {
+    "@react-three/fiber": "^9.6.0",
+    "@types/three": "^0.184.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "vite": "^8.0.9"
+  }
+}
